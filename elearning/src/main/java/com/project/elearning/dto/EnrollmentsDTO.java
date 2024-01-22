@@ -15,4 +15,5 @@ public class EnrollmentsDTO {
 
 	private String username;
 	private LocalDate enrollDate;
+	private String status;
 }

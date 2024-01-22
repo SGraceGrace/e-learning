@@ -49,6 +49,7 @@ public class EnrollmentSeviceImpl implements EnrollmentService {
 			e.setCourse(course);
 
 			e.setEnrollDate(LocalDate.now());
+			e.setStarted(false);
 			e.setModule("Not Started");
 			e.setStatus("Not Started");
 			e.setCompletedDate("Not Started");

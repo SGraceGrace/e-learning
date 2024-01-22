@@ -33,9 +33,6 @@ public class User implements UserDetails{
 	@Field("name")
 	private String name;
 	
-	@Field("state")
-	private String state;
-	
 	@Field("profession")
 	private String profession;
 	

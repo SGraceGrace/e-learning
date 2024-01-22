@@ -23,4 +23,8 @@ public interface DaoInterface {
 
 	List<EnrollmentsDTO> getEnrollments(String id);
 
+	void addTutorialRatings(String id, int tutorialRatings);
+
+	void increaseCourse(String id);
+
 }

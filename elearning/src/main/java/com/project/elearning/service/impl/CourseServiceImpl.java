@@ -13,9 +13,11 @@ import com.project.elearning.exception.CourseAlreadyExistsException;
 import com.project.elearning.exception.CourseNotFoundException;
 import com.project.elearning.jwtservice.JwtService;
 import com.project.elearning.model.Course;
+import com.project.elearning.model.Instructor;
 import com.project.elearning.model.Review;
 import com.project.elearning.model.User;
 import com.project.elearning.repository.CourseRepository;
+import com.project.elearning.repository.InstructorRepository;
 import com.project.elearning.repository.UserRepository;
 import com.project.elearning.service.CourseService;
 
@@ -24,6 +26,9 @@ public class CourseServiceImpl implements CourseService {
 
 	@Autowired
 	CourseRepository repository;
+	
+	@Autowired
+	InstructorRepository repository2;
 
 	@Autowired
 	UserRepository repo;
@@ -39,13 +44,15 @@ public class CourseServiceImpl implements CourseService {
 
 		String email = jwtService.extractUsername(token);
 		User user = repo.findByemail(email);
+		Instructor instructor = repository2.findByuser(user);
 
 		if (existsById(c.getCourseUid())) {
 			throw new CourseAlreadyExistsException();
 		} else {
 			c.setPublished(LocalDate.now());
-			c.setInstructor(user);
+			c.setInstructor(instructor);
 			repository.save(c);
+			dao.increaseCourse(instructor.getId());
 			return "COURSE ADDED SUCCESSFULLY";
 		}
 	}

@@ -34,6 +34,9 @@ public class Enrollment {
 	@Field("enroll_date")
 	private LocalDate enrollDate;
 	
+	@Field("isStarted")
+	private boolean started;
+	
 	@Field("module")
 	private String module;
 	

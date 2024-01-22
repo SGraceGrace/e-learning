@@ -14,6 +14,7 @@ import com.project.elearning.dao.DaoInterface;
 import com.project.elearning.dto.EnrollmentsDTO;
 import com.project.elearning.model.Course;
 import com.project.elearning.model.Enrollment;
+import com.project.elearning.model.Instructor;
 import com.project.elearning.model.Review;
 import com.project.elearning.model.User;
 import com.project.elearning.repository.CourseRepository;
@@ -87,6 +88,16 @@ public class DaoImpl implements DaoInterface {
 		Update update = new Update().inc("totalEnrollments", 1);
 
 		mongoTemplate.updateMulti(query, update, Course.class);
+		
+		Course course = repo.findBycourseUid(courseUid);
+		
+		Criteria criteria2 = Criteria.where("id").is(course.getInstructor().getId());
+		
+		Query query2 = new Query(criteria2);
+		
+		Update update2 = new Update().inc("total_students", 1);
+		
+		mongoTemplate.updateMulti(query2, update2, Instructor.class);
 	}
 
 	@Override
@@ -116,11 +127,41 @@ public class DaoImpl implements DaoInterface {
 		
 		for (Enrollment enrollment : list) {
 			EnrollmentsDTO enrollmentsDTO = EnrollmentsDTO.builder().username(enrollment.getStudent().getUserId())
-					.enrollDate(enrollment.getEnrollDate()).build();
+					.enrollDate(enrollment.getEnrollDate()).status(enrollment.getStatus()).build();
 			
 			enroll.add(enrollmentsDTO);
 		}
 
 		return enroll;
+	}
+
+	@Override
+	public void addTutorialRatings(String id, int tutorialRatings) {
+		
+		Course course = repo.findBycourseUid(id);
+
+		Instructor instructor = course.getInstructor();
+		
+		Criteria criteria = Criteria.where("instructor").is(instructor);
+		
+		Query query = new Query(criteria);
+		
+		Update upadte = new Update().inc("tutorial_ratings", tutorialRatings);
+		
+		mongoTemplate.updateFirst(query, upadte, Instructor.class);
+		
+		
+	}
+
+	@Override
+	public void increaseCourse(String id) {
+		
+		Criteria criteria = Criteria.where("id").is(id);
+		
+		Query query = new Query(criteria);
+		
+		Update update = new Update().inc("total-courses", 1);
+		
+		mongoTemplate.updateFirst(query, update, Instructor.class);
 	}
 }

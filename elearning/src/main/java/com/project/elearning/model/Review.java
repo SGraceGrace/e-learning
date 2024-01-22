@@ -13,4 +13,5 @@ public class Review {
 
 	private int rating;
 	private String name;
+	private String description;
 }

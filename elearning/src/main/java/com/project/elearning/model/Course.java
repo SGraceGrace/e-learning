@@ -53,7 +53,7 @@ public class Course {
 	
 	@DocumentReference
 	@Field("instructor")
-	private User instructor;
+	private Instructor instructor;
 	
 	@Field("assignment")
 	private Assignment assingment;
