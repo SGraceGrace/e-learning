@@ -4,29 +4,19 @@ This application is a backend application for e-learning platform. It handles us
 
 ## Features 
 
-**1.User Authentication:** 
-
-            Secure user authentication system with support for roles (users, instructors, administrators).
+**1.User Authentication:** Secure user authentication system with support for roles (users, instructors, administrators).
 
 
-**2.Course Management:** 
-      
-            Instructors can Create, update, and delete courses of their own. Manage enrollments.
+**2.Course Management:** Instructors can Create, update, and delete courses of their own. Manage enrollments.
 
 
-**3.Content Delivery:** 
-
-           Stream educational content and support text content will several modules and assignments.
+**3.Content Delivery:** Stream educational content and support text content will several modules and assignments.
 
 
-**4.User Progress Tracking:**
-
-           Monitor and track user progress within courses and assignments.
+**4.User Progress Tracking:**Monitor and track user progress within courses and assignments.
 
 
-**5.Enrollment:** 
-
-          User can enroll in any courses and can able to dismiss the enrollments.
+**5.Enrollment:** User can enroll in any courses and can able to dismiss the enrollments.
 
 ## Roles
 
@@ -37,3 +27,14 @@ This application is a backend application for e-learning platform. It handles us
 
 
 **USER:** User can view list of courses, enroll in any of the courses.
+
+## Database
+
+This application uses Mongodb to store the data and the database is : **elearning**
+
+## Collections Used 
+
++user
++course
++announcement
++enrollment
