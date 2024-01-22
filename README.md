@@ -36,11 +36,8 @@ This application uses Mongodb to store the data and the database is : **elearnin
 
 + user
 
++ course
 
-+course
++ announcement
 
-
-+announcement
-
-
-+enrollment
++ enrollment
