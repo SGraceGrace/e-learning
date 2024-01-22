@@ -13,7 +13,7 @@ This application is a backend application for e-learning platform. It handles us
 **3.Content Delivery:** Stream educational content and support text content will several modules and assignments.
 
 
-**4.User Progress Tracking:**Monitor and track user progress within courses and assignments.
+**4.User Progress Tracking:** Monitor and track user progress within courses and assignments.
 
 
 **5.Enrollment:** User can enroll in any courses and can able to dismiss the enrollments.
@@ -34,7 +34,13 @@ This application uses Mongodb to store the data and the database is : **elearnin
 
 ## Collections Used 
 
-+user
++ user
+
+
 +course
+
+
 +announcement
+
+
 +enrollment
