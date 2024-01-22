@@ -42,4 +42,4 @@ This application uses Mongodb to store the data and the database is : **elearnin
 
 + enrollment
 
-+Instructor
++ instructor
