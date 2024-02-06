@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.elearning.dao.DaoInterface;
 import com.project.elearning.dto.EnrollmentsDTO;
 import com.project.elearning.exception.CourseNotFoundException;
+import com.project.elearning.exception.EnrollmentIsFullException;
 import com.project.elearning.model.Enrollment;
 import com.project.elearning.service.EnrollmentService;
 
@@ -33,7 +34,7 @@ public class EnrollementController {
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
 	@PostMapping("add-enrollment/{id}")
 	public String saveEnrollment(@RequestBody Enrollment enroll, @PathVariable String id, HttpServletRequest request)
-			throws CourseNotFoundException {
+			throws CourseNotFoundException, EnrollmentIsFullException {
 		String token = request.getHeader("Authorization").substring(7);
 		return service.add(enroll, id, token);
 	}

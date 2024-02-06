@@ -37,4 +37,9 @@ public class MyException {
 	public ResponseEntity<Object> courseNotFoundException(CourseNotFoundException CourseNotFound){
 		return new ResponseEntity<Object>("COURSE NOT FOUND", HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(value = EnrollmentIsFullException.class)
+	public ResponseEntity<Object> enrollmentIsFull(EnrollmentIsFullException enrollmentIsFull){
+		return new ResponseEntity<Object>("Sorry, enrollment is full for this course.", HttpStatus.FORBIDDEN);
+	}
 }

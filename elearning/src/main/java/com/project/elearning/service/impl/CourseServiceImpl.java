@@ -54,7 +54,7 @@ public class CourseServiceImpl implements CourseService {
 	String upload;
 
 	@Override
-	public String addCourse(Course c, String token, MultipartFile file) throws CourseAlreadyExistsException {
+	public String addCourse(Course c, String token) throws CourseAlreadyExistsException {
 
 		String email = jwtService.extractUsername(token);
 		User user = repo.findByemail(email);
@@ -67,6 +67,7 @@ public class CourseServiceImpl implements CourseService {
 			c.setPublished(LocalDate.now());
 			c.setTotalEnrollments(0);
 			c.setInstructor(instructor);
+			c.setMaxEnrollments(100);
 			repository.save(c);
 			dao.increaseCourse(instructor.getId());
 			return "COURSE ADDED SUCCESSFULLY";

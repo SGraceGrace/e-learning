@@ -34,9 +34,9 @@ public class CourseController {
 
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'INSTRUCTOR')")
 	@PostMapping("add-course")
-	public String addCourse(@RequestBody Course c, HttpServletRequest request, @RequestParam MultipartFile file) throws CourseAlreadyExistsException {
+	public String addCourse(@RequestBody Course c, HttpServletRequest request) throws CourseAlreadyExistsException {
 		String token = request.getHeader("Authorization").substring(7);
-		return service.addCourse(c, token, file);
+		return service.addCourse(c, token);
 	}
 
 	@GetMapping("all-course")

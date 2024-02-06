@@ -50,6 +50,9 @@ public class Course {
 	@Field("total_enrollments")
 	private int totalEnrollments;
 	
+	@Field("max-enrollment")
+	private int maxEnrollments;
+	
 	@DocumentReference
 	@Field("instructor")
 	private Instructor instructor;

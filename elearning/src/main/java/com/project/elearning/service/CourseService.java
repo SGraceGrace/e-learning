@@ -21,6 +21,6 @@ public interface CourseService {
 	String addReview(String courseUid, int rating, String token);
 	Course getCourseById(String courseUid) throws CourseNotFoundException;
 	String deleteCourse(String courseUid) throws CourseNotFoundException;
-	String addCourse(Course c ,String token, MultipartFile file) throws CourseAlreadyExistsException;
+	String addCourse(Course c ,String token) throws CourseAlreadyExistsException;
 	Video addVideo(MultipartFile video) throws IOException;
 }

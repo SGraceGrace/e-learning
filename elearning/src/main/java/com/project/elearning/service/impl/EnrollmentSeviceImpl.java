@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.project.elearning.dao.DaoInterface;
 import com.project.elearning.dto.EnrollmentsDTO;
 import com.project.elearning.exception.CourseNotFoundException;
+import com.project.elearning.exception.EnrollmentIsFullException;
 import com.project.elearning.jwtservice.JwtService;
 import com.project.elearning.model.Course;
 import com.project.elearning.model.Enrollment;
@@ -37,7 +38,7 @@ public class EnrollmentSeviceImpl implements EnrollmentService {
 	JwtService jwtService;
 
 	@Override
-	public String add(Enrollment e, String courseUid, String token) throws CourseNotFoundException {
+	public String add(Enrollment e, String courseUid, String token) throws CourseNotFoundException, EnrollmentIsFullException {
 		String email = jwtService.extractUsername(token);
 
 		User user = repo.findByemail(email);
@@ -45,7 +46,7 @@ public class EnrollmentSeviceImpl implements EnrollmentService {
 
 		Course course = courseRepository.findBycourseUid(courseUid);
 
-		if (course != null) {
+		if (course != null && course.getTotalEnrollments() < course.getMaxEnrollments()) {
 			e.setCourse(course);
 
 			e.setEnrollDate(LocalDate.now());
@@ -60,8 +61,10 @@ public class EnrollmentSeviceImpl implements EnrollmentService {
 			dao.increaseEnrollment(courseUid);
 
 			return "ENROLLED SUCCESSFULLY";
-		} else {
+		} else if(course == null){
 			throw new CourseNotFoundException();
+		}else {
+			throw new EnrollmentIsFullException(); 
 		}
 	}
 
