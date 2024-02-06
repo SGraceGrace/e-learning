@@ -1,7 +1,7 @@
 package com.project.elearning.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Course {
 
 	@Id
@@ -27,23 +29,20 @@ public class Course {
 	@Field("course_name")
 	private String courseName;
 	
+	@Field("brief-description")
+	private String briefDescription;
+	
 	@Field("description")
 	private String description;
 	
 	@Field("modules")
-	private ArrayList<Modules> modules;
-	
-	@Field("start_date")
-	private String startDate;
-	
-	@Field("end_date")
-	private String endDate;
+	private List<Modules> modules;
 	
 	@Field("amount")
 	private double amount;
 	
 	@Field("review")
-	private ArrayList<Review> review;
+	private List<Review> review;
 	
 	@Field("published_on")
 	private LocalDate published;

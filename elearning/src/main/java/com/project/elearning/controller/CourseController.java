@@ -1,5 +1,6 @@
 package com.project.elearning.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.elearning.dto.CourseDTO;
 import com.project.elearning.exception.CourseAlreadyExistsException;
 import com.project.elearning.exception.CourseNotFoundException;
 import com.project.elearning.model.Course;
+import com.project.elearning.model.Video;
 import com.project.elearning.service.CourseService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,9 +34,9 @@ public class CourseController {
 
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'INSTRUCTOR')")
 	@PostMapping("add-course")
-	public String addCourse(@RequestBody Course c, HttpServletRequest request) throws CourseAlreadyExistsException {
+	public String addCourse(@RequestBody Course c, HttpServletRequest request, @RequestParam MultipartFile file) throws CourseAlreadyExistsException {
 		String token = request.getHeader("Authorization").substring(7);
-		return service.addCourse(c, token);
+		return service.addCourse(c, token, file);
 	}
 
 	@GetMapping("all-course")
@@ -50,7 +53,7 @@ public class CourseController {
 	public List<CourseDTO> getCourse(@RequestParam String search) throws CourseNotFoundException {
 		return service.searchCourse(search);
 	}
-	
+
 	@PutMapping("review/{courseUid}")
 	public String addReview(@PathVariable String courseUid, @RequestParam int rating, HttpServletRequest request) {
 		String token = request.getHeader("Authorization").substring(7);
@@ -64,7 +67,12 @@ public class CourseController {
 	}
 
 	@DeleteMapping("delete/{courseUid}")
-	public String deleteCourse(@PathVariable String courseUid) throws CourseNotFoundException{
+	public String deleteCourse(@PathVariable String courseUid) throws CourseNotFoundException {
 		return service.deleteCourse(courseUid);
+	}
+	
+	@PostMapping("/add-video")
+	public Video addVideo(@RequestParam MultipartFile video) throws IOException {
+		return service.addVideo(video);
 	}
 }

@@ -50,8 +50,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUser(String userId) throws UserNotFoundException{
-		User user = repository.findByuserId(userId);
+	public User getUser(String token) throws UserNotFoundException{
+		String email = jwtService.extractUsername(token);
+		User user = repository.findByemail(email);
+				
 		if(user!=null) {
 			return user;
 		}else {
@@ -62,8 +64,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String updateUser(User u) throws UserNotFoundException{
 		if (existsByEmail(u.getEmail())) {
+			User user = repository.findByemail(u.getEmail());
+			System.out.println(user.getId());
+			u.setId(user.getId());
+			u.setPassword(user.getPassword());
+			u.setRoles(user.getRoles());
 			repository.save(u);
-			return "UPDATED SUCCESSFULLY";
+			return "Updated Successfully";
 		}else {
 			throw new UserNotFoundException();
 		}
@@ -73,6 +80,7 @@ public class UserServiceImpl implements UserService {
 	public String deleteUser(String token) throws UserNotFoundException{
 		String email = jwtService.extractUsername(token);
 		if (existsByEmail(email)) {
+			dao.deleteInstructor(email);
 			repository.deleteByemail(email);
 			return "DELETED SUCCESSFULLY";
 		}else {

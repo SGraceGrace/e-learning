@@ -1,6 +1,8 @@
 package com.project.elearning.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -30,8 +32,14 @@ public class User implements UserDetails{
 	@Field("userId")
 	private String userId;
 	
-	@Field("name")
-	private String name;
+	@Field("first_name")
+	private String firstName;
+	
+	@Field("last_name")
+	private String lastName;
+	
+	@Field("bio")
+	private String bio;
 	
 	@Field("profession")
 	private String profession;
@@ -48,12 +56,17 @@ public class User implements UserDetails{
 	private String password;
 
 	@JsonIgnore
-	@Field("role")
-	private Role role;
+	@Field("roles")
+	private List<Role> roles;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role.name()));
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		
+		for (Role role: roles) {
+			authorities.add(new SimpleGrantedAuthority(role.name()));
+		}
+		return authorities;
 	}
 
 	@Override

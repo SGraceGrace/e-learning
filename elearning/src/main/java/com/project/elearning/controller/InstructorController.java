@@ -10,12 +10,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.elearning.service.InstructorService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("instructor")
 public class InstructorController {
 	
 	@Autowired
 	InstructorService service;
+	
+	@PostMapping("add-instructor")
+	public String addInstructor(HttpServletRequest request, @RequestParam int students) {
+		String token = request.getHeader("Authorization").substring(7);
+		return service.addInstructor(token, students);
+	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
 	@PostMapping("add-ratings/{id}")

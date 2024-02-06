@@ -1,5 +1,7 @@
 package com.project.elearning.service.impl;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,7 +18,6 @@ import com.project.elearning.exception.UserAlreadyExistsException;
 import com.project.elearning.exception.UserIdAlreadyExistsException;
 import com.project.elearning.exception.UserNotFoundException;
 import com.project.elearning.jwtservice.JwtService;
-import com.project.elearning.model.Instructor;
 import com.project.elearning.model.Role;
 import com.project.elearning.model.User;
 import com.project.elearning.repository.InstructorRepository;
@@ -62,27 +63,16 @@ public class AuthServiceImpl implements AuthService {
 			String token = "";
 
 			if (signupDTO.getEmail().contains("admin")) {
-				user = User.builder().userId(signupDTO.getUserId()).name("-").profession("-").organisation("-")
+				user = User.builder().userId(signupDTO.getUserId()).firstName("").lastName("").bio("").profession("").organisation("")
 						.email(signupDTO.getEmail()).password(passwordEncoder.encode(signupDTO.getPassword()))
-						.role(Role.ADMIN).build();
-			} else if (signupDTO.getEmail().contains("instructor")) {
-				user = User.builder().userId(signupDTO.getUserId()).name("-").profession("-").organisation("-")
+						.roles(Arrays.asList(Role.ADMIN)) .build();
+			}else {
+				user = User.builder().userId(signupDTO.getUserId()).firstName("").lastName("").bio("").profession("").organisation("")
 						.email(signupDTO.getEmail()).password(passwordEncoder.encode(signupDTO.getPassword()))
-						.role(Role.INSTRUCTOR).build();
-			} else {
-				user = User.builder().userId(signupDTO.getUserId()).name("-").profession("-").organisation("-")
-						.email(signupDTO.getEmail()).password(passwordEncoder.encode(signupDTO.getPassword()))
-						.role(Role.USER).build();
+						.roles(Arrays.asList(Role.USER)) .build();
 			}
 			repository.save(user);
 			token = jwtService.generateToken(user);
-
-			if (signupDTO.getEmail().contains("instructor")) {
-				Instructor instructor = Instructor.builder().user(user).totalCourse(0).tutorialRatings(0).students(0)
-						.build();
-
-				repo.save(instructor);
-			}
 
 			return ResponseDTO.builder().accessToken(token).build();
 

@@ -24,8 +24,14 @@ public class Instructor{
 	@Field("user")
 	private User user;
 	
+	@Field("name")
+	private String name;
+	
+	@Field("description")
+	private String description;
+	
 	@Field("tutorial_ratings")
-	private int tutorialRatings;
+	private double tutorialRatings;
 		
 	@Field("total-courses")
 	private int totalCourse;

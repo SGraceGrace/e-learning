@@ -16,6 +16,7 @@ import com.project.elearning.model.Course;
 import com.project.elearning.model.Enrollment;
 import com.project.elearning.model.Instructor;
 import com.project.elearning.model.Review;
+import com.project.elearning.model.Role;
 import com.project.elearning.model.User;
 import com.project.elearning.repository.CourseRepository;
 import com.project.elearning.repository.UserRepository;
@@ -163,5 +164,29 @@ public class DaoImpl implements DaoInterface {
 		Update update = new Update().inc("total-courses", 1);
 		
 		mongoTemplate.updateFirst(query, update, Instructor.class);
+	}
+
+	@Override
+	public void deleteInstructor(String email) {
+		User user = repository.findByemail(email);
+		System.out.println(user);
+		Criteria criteria = Criteria.where("user").is(user);
+
+		Query query = new Query(criteria);
+		
+		mongoTemplate.remove(query,Instructor.class);
+		
+	}
+
+	@Override
+	public void addInstructorRole(String email) {
+		
+		Criteria criteria = Criteria.where("email").is(email);
+		
+		Query query = new Query(criteria);
+		
+		Update update = new Update().push("roles", Role.INSTRUCTOR);
+		
+		mongoTemplate.updateFirst(query, update, User.class);
 	}
 }

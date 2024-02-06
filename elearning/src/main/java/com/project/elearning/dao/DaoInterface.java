@@ -27,4 +27,8 @@ public interface DaoInterface {
 
 	void increaseCourse(String id);
 
+	void deleteInstructor(String email);
+
+	void addInstructorRole(String email);
+
 }

@@ -2,6 +2,7 @@ package com.project.elearning.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,14 +29,16 @@ public class AuthController {
 	@Autowired
 	AuthService service;
 
-	
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/signup")
 	public ResponseDTO signup(@RequestBody SignupDTO signupDTO) throws UserIdAlreadyExistsException,UserEmailAlreadyExistsException, UserAlreadyExistsException {
 		return service.signup(signupDTO);	
 	}
 	
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/login")
 	public ResponseDTO login(@RequestBody LoginDTO loginDTO) throws UserNotFoundException {
+		System.out.println(loginDTO);
 		return service.login(loginDTO);
 	}
 

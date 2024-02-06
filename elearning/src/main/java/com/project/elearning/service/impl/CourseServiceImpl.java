@@ -1,11 +1,17 @@
 package com.project.elearning.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.elearning.dao.DaoInterface;
 import com.project.elearning.dto.CourseDTO;
@@ -16,9 +22,11 @@ import com.project.elearning.model.Course;
 import com.project.elearning.model.Instructor;
 import com.project.elearning.model.Review;
 import com.project.elearning.model.User;
+import com.project.elearning.model.Video;
 import com.project.elearning.repository.CourseRepository;
 import com.project.elearning.repository.InstructorRepository;
 import com.project.elearning.repository.UserRepository;
+import com.project.elearning.repository.VideoRepository;
 import com.project.elearning.service.CourseService;
 
 @Service
@@ -29,6 +37,9 @@ public class CourseServiceImpl implements CourseService {
 	
 	@Autowired
 	InstructorRepository repository2;
+	
+	@Autowired
+	VideoRepository repository3;
 
 	@Autowired
 	UserRepository repo;
@@ -38,9 +49,12 @@ public class CourseServiceImpl implements CourseService {
 
 	@Autowired
 	JwtService jwtService;
+	
+	@Value("${upload.folder}")
+	String upload;
 
 	@Override
-	public String addCourse(Course c, String token) throws CourseAlreadyExistsException {
+	public String addCourse(Course c, String token, MultipartFile file) throws CourseAlreadyExistsException {
 
 		String email = jwtService.extractUsername(token);
 		User user = repo.findByemail(email);
@@ -49,7 +63,9 @@ public class CourseServiceImpl implements CourseService {
 		if (existsById(c.getCourseUid())) {
 			throw new CourseAlreadyExistsException();
 		} else {
+			c.setReview(new ArrayList<>());
 			c.setPublished(LocalDate.now());
+			c.setTotalEnrollments(0);
 			c.setInstructor(instructor);
 			repository.save(c);
 			dao.increaseCourse(instructor.getId());
@@ -67,6 +83,7 @@ public class CourseServiceImpl implements CourseService {
 			for (Course course : list) {
 				CourseDTO courseDTO = CourseDTO.builder().courseUid(course.getCourseUid())
 						.courseName(course.getCourseName()).description(course.getDescription())
+						.briefDescription(course.getBriefDescription())
 						.amount(course.getAmount()).reviews(4).build();
 				courses.add(courseDTO);
 			}
@@ -87,6 +104,7 @@ public class CourseServiceImpl implements CourseService {
 			for (Course course : list) {
 				CourseDTO courseDTO = CourseDTO.builder().courseUid(course.getCourseUid())
 						.courseName(course.getCourseName()).description(course.getDescription())
+						.briefDescription(course.getBriefDescription())
 						.amount(course.getAmount()).reviews(5).build();
 				courses.add(courseDTO);
 			}
@@ -139,6 +157,17 @@ public class CourseServiceImpl implements CourseService {
 		}else {
 			throw new CourseNotFoundException();
 		}
+	}
+
+	public Video addVideo(MultipartFile video) throws IOException {
+		String s = video.getOriginalFilename();	
+		String fileName = upload + File.separator + s;
+		Files.copy(video.getInputStream(), Paths.get(upload + File.separator + s));
+		
+		Video video2 = Video.builder().url(fileName).build();
+		Video savedVideo =  repository3.save(video2);
+		System.out.println(savedVideo.get_id());
+		return savedVideo;
 	}
 
 }
