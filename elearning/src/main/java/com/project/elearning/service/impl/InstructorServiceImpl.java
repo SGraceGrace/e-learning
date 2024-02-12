@@ -33,10 +33,10 @@ public class InstructorServiceImpl implements InstructorService {
 	}
 
 	@Override
-	public String addInstructor(String token, int students) {
+	public String addInstructor(String token, String name, String bio, int students) {
 		String email = jwtService.extractUsername(token);
 		User user = repository.findByemail(email);
-		Instructor instructor = Instructor.builder().user(user).totalCourse(0).tutorialRatings(0).students(students).build();
+		Instructor instructor = Instructor.builder().user(user).name(name).bio(bio).totalCourse(0).tutorialRatings(0).students(students).build();
 		repo.save(instructor);
 		dao.addInstructorRole(email);
 		return "ADDED SUCCESSFULLY";

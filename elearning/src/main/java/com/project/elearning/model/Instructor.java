@@ -27,8 +27,8 @@ public class Instructor{
 	@Field("name")
 	private String name;
 	
-	@Field("description")
-	private String description;
+	@Field("bio")
+	private String bio;
 	
 	@Field("tutorial_ratings")
 	private double tutorialRatings;

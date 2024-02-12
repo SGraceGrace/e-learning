@@ -20,9 +20,9 @@ public class InstructorController {
 	InstructorService service;
 	
 	@PostMapping("add-instructor")
-	public String addInstructor(HttpServletRequest request, @RequestParam int students) {
+	public String addInstructor(HttpServletRequest request, @RequestParam String name, @RequestParam String bio, @RequestParam int students) {
 		String token = request.getHeader("Authorization").substring(7);
-		return service.addInstructor(token, students);
+		return service.addInstructor(token, name, bio, students);
 	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
